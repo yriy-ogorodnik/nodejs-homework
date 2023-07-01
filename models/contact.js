@@ -25,6 +25,12 @@ const contactSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    // власник людина яка додала книги
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      // required: true,
+    },
   },
   {
     versionKey: false,

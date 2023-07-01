@@ -3,7 +3,17 @@ const { Contact } = require("../models/contact");
 const { HttpError, ctrlWrapper } = require("../helpers");
 
 const getAll = async (req, res) => {
-  const result = await Contact.find();
+  // дізнаємося хто робить запит
+  const { _id: owner } = req.user;
+  // всі параметри пошуку  req.query
+  const { page = 1, limit = 10} = req.query;
+  // populate("owner"); замість себе запише весь обєкт
+  const skip = (page - 1) * limit
+  
+  const result = await Contact.find(
+    { owner },
+    "-createdAt -updatedAt", {skip, limit}
+  ).populate("owner", "email");
   res.json(result);
 };
 
@@ -18,7 +28,8 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res, next) => {
-  const result = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 
