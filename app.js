@@ -14,6 +14,9 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+// як що прийде запит за файли бери його з папки
+app.use(express.static("public"))
+
 app.use("/api/auth", authRouter)
 app.use("/api/contacts", contactsRouter);
 
