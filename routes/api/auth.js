@@ -8,6 +8,11 @@ const router = express.Router()
 // signup
 router.post("/register", validationBody(schemas.registerSchema), ctrl.register)
 
+router.get("/verify/:verificationToken", ctrl.verifyEmail);
+
+// для повторної відправки листа верефікації
+router.post("/verify", validationBody(schemas.emailSchema), ctrl.resendVerifyEmail);
+
 // signin
 router.post("/login", validationBody(schemas.loginSchema), ctrl.login)
 
